@@ -1,6 +1,5 @@
 {
   "name": "backend",
-  "homepage": "https://my-fave-beers.herokuapp.com",
   "version": "1.0.0",
   "description": "",
   "main": "server.js",
