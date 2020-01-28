@@ -1,6 +1,6 @@
 const router = require('express').Router()
 let User = require('../models/user.model')
-const bcrypt = require('bcrypt-js')
+const bcrypt = require('bcrypt-nodejs')
 
 router.route('/').get((req, res) => {
     User.find()
