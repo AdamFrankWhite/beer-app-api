@@ -41,7 +41,7 @@ router.route('/register').post((req, res) => {
         password,
         email
     })
-    bcrypt.hash(password, 10, null, function(err, hash) {
+    bcrypt.hash(password, 10, function(err, hash) {
         newUser.password = hash
         newUser.save()
         .then(() => res.json('User added!'))
