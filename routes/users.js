@@ -21,7 +21,7 @@ router.route("/register").post(register);
 
 router.route("/my-beers/").get(getUserBeers);
 router.route("/my-beers/add").post(addBeer);
-router.route("/my-beers/delete-beer").delete(deleteBeer);
+router.route("/my-beers/delete-beer").put(deleteBeer);
 router.route("/my-beers/update").put(updateBeerRating);
 // router.route("/my-beers/update/:id").post(updateBeerRatingById);
 
