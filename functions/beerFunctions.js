@@ -2,9 +2,8 @@ const Beer = require("../models/beer.model");
 const User = require("../models/user.model");
 
 exports.getUserBeers = (req, res) => {
-    console.log(req.query.username);
-    User.findOne({ username: req.query.username })
-        .then((user) => res.json(user))
+    User.findOne({ username: req.params.username })
+        .then((user) => res.json(user.beers))
         .catch((err) => res.status(400).json("Error: " + err));
 };
 

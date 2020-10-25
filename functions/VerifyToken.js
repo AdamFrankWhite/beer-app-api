@@ -16,7 +16,8 @@ exports.verifyToken = (req, res, next) => {
                 // Place logged in user id in req object, to be passed along to callback function
                 req.currentUserID = authData.user._id.toString();
                 // req.currentUserData = authData.user;
-                // req.currentUserHandle = authData.user.profile.handle;
+                // console.log(authData.user.toString());
+                // req.currentUser = authData.user;
                 next();
             }
         });

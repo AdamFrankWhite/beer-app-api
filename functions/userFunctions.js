@@ -13,7 +13,7 @@ exports.login = (req, res, next) => {
     };
 
     User.authenticate(user.username, user.password, (error, user) => {
-        let beers = user.beers;
+        let beers = user.beers | [];
         if (error || !user) {
             let err = new Error("User or password do not match");
             err.status = 401;
@@ -21,14 +21,20 @@ exports.login = (req, res, next) => {
         } else {
             console.log("Login attempt...");
             // If authorised, create token
+            console.log(user);
             jwt.sign(
                 { user },
                 "secret_key",
                 // { expiresIn: "5m" },
                 (err, token) => {
                     if (token) {
-                        console.log("Success");
-                        res.status(200).json({ beers, token });
+                        // console.log({ beers, token, user });
+                        res.status(200).json({
+                            beers,
+                            token,
+
+                            username: user.username,
+                        });
                     } else {
                         console.log("Login failed");
                         res.status(401).json("Error: " + err);

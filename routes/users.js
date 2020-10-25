@@ -19,7 +19,7 @@ router.route("/register").post(register);
 
 // Beer routes
 
-router.route("/my-beers/").get(getUserBeers);
+router.route("/my-beers/:username").get(getUserBeers);
 router.route("/my-beers/add").post(addBeer);
 router.route("/my-beers/delete-beer").put(deleteBeer);
 router.route("/my-beers/update").put(updateBeerRating);
