@@ -19,6 +19,7 @@ exports.addBeer = (req, res) => {
         date: Date.parse(req.body.date),
         stars: req.body.stars,
         img: req.body.img,
+        beerInfo: req.body.beerInfo,
     };
 
     User.findOne({ username: req.body.username }).then((user) => {
