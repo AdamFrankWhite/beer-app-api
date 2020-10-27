@@ -1,5 +1,6 @@
 const User = require("../models/user.model");
 const jwt = require("jsonwebtoken");
+const bcrypt = require("bcryptjs");
 exports.getUsers = (req, res) => {
     User.find()
         .then((users) => res.json(users))
@@ -11,9 +12,8 @@ exports.login = (req, res, next) => {
         username: req.body.username,
         password: req.body.password,
     };
-
     User.authenticate(user.username, user.password, (error, user) => {
-        let beers = user.beers | [];
+        let beers = user.beers ? user.beers : [];
         if (error || !user) {
             let err = new Error("User or password do not match");
             err.status = 401;
@@ -21,7 +21,6 @@ exports.login = (req, res, next) => {
         } else {
             console.log("Login attempt...");
             // If authorised, create token
-            console.log(user);
             jwt.sign(
                 { user },
                 "secret_key",
@@ -65,4 +64,5 @@ exports.register = (req, res) => {
             .then(() => res.json("User added!"))
             .catch((err) => res.status(400).json("Error is... " + err));
     });
+    console.log(username + " added");
 };

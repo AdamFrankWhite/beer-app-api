@@ -14,7 +14,8 @@ exports.addBeer = (req, res) => {
         beerType: req.body.beerType,
         abv: req.body.abv,
         beerDescription: req.body.beerDescription,
-        brewery: req.body.brewery,
+        breweryName: req.body.breweryName,
+        breweryContact: req.body.breweryContact,
         date: Date.parse(req.body.date),
         stars: req.body.stars,
         img: req.body.img,
@@ -52,7 +53,7 @@ exports.deleteBeer = (req, res) => {
 };
 exports.updateBeerRating = (req, res) => {
     const updateBeerDetails = req.body.beerData;
-
+    console.log(req.body);
     updateBeerDetails.stars = req.body.newRating;
 
     User.findOne({ username: req.body.username }).then((user) => {
