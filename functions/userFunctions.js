@@ -66,3 +66,22 @@ exports.register = (req, res) => {
     });
     console.log(username + " added");
 };
+
+exports.resetPassword = (req, res) => {
+    const { email } = req.body;
+    console.log(email);
+    User.findOne({ email })
+        .then((user) => {
+            if (user) {
+                res.json({ sent: true });
+                console.log("User Found");
+                //Sent email reset
+                //Notify User email sent
+            } else {
+                res.json({ sent: false });
+                console.log("No user with that email address");
+                //Notify user email not found
+            }
+        })
+        .catch((err) => console.log(err));
+};

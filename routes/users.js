@@ -3,7 +3,12 @@ let User = require("../models/user.model");
 const bcrypt = require("bcryptjs");
 const { verifyToken } = require("../functions/VerifyToken");
 // Functions
-const { getUsers, login, register } = require("../functions/userFunctions");
+const {
+    getUsers,
+    login,
+    register,
+    resetPassword,
+} = require("../functions/userFunctions");
 const {
     addBeer,
     getUserBeers,
@@ -16,7 +21,7 @@ const {
 router.route("/").get(getUsers);
 router.route("/login").post(login);
 router.route("/register").post(register);
-
+router.route("/reset-password").post(resetPassword);
 // Beer routes
 
 router.route("/my-beers/:username").get(getUserBeers);
