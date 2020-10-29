@@ -161,7 +161,7 @@ exports.resetPassword = (req, res) => {
             User.findOneAndUpdate(
                 { email: thisRequest.email },
                 { $set: { password: hashedPassword } },
-                { new: true },
+                { new: true, useFindAndModify: false },
                 (err, user) => {
                     if (err) {
                         throw err;
