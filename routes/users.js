@@ -8,7 +8,7 @@ const {
     login,
     register,
     forgotPassword,
-    newPassword,
+    resetPassword,
 } = require("../functions/userFunctions");
 const {
     addBeer,
@@ -23,7 +23,7 @@ router.route("/").get(getUsers);
 router.route("/login").post(login);
 router.route("/register").post(register);
 router.route("/forgot").post(forgotPassword);
-router.route("/reset/:id").get(newPassword);
+router.route("/reset").put(resetPassword);
 // Beer routes
 
 router.route("/my-beers/:username").get(getUserBeers);

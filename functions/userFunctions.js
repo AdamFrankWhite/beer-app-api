@@ -3,6 +3,25 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const uniqid = require("uniqid");
 const nodemailer = require("nodemailer");
+// const {
+//     getResetRequest,
+//     createResetRequest,
+// } = require("../models/resetRequests");
+// const { get } = require("../routes/users");
+const requests = [];
+
+function createResetRequest(resetRequest) {
+    requests.push(resetRequest);
+    console.log(requests);
+}
+
+function getResetRequest(id) {
+    // console.log(id, requests[0]);
+    console.log(requests);
+    const thisRequest = requests.find((req) => req.id == id);
+
+    return thisRequest;
+}
 
 const sendMail = (request) => {
     // create reusable transporter object using the default SMTP transport
@@ -18,9 +37,9 @@ const sendMail = (request) => {
 
     let emailBody = `
     <b>Hello there,<b>
-    <p>To reset your password, please click the following link:<a href="http://localhost:5000/users/reset/${request.id}">http://localhost:5000/users/reset/${request.id}</a></p>  
+    <p>To reset your password, please click the following link:<a href="http://localhost:3000/reset/?q=${request.id}">http://localhost:3000/reset/q?=${request.id}</a></p>  
   `;
-    console.log(request.email);
+
     // send mail with defined transport object
     transporter.sendMail(
         {
@@ -34,7 +53,6 @@ const sendMail = (request) => {
             if (error) {
                 console.log(error);
             }
-            console.log(info);
         }
     );
 };
@@ -116,7 +134,9 @@ exports.forgotPassword = (req, res) => {
                     id,
                     email,
                 };
+
                 res.json({ sent: true });
+                createResetRequest(request);
                 console.log("User Found", request);
                 sendMail(request);
                 //Sent email reset
@@ -130,6 +150,28 @@ exports.forgotPassword = (req, res) => {
         .catch((err) => console.log(err));
 };
 
-exports.newPassword = (req, res) => {
-    console.log(req.params.id);
+exports.resetPassword = (req, res) => {
+    const { id, newPassword } = req.body;
+    console.log(id, newPassword);
+    let thisRequest = getResetRequest(id);
+    if (thisRequest) {
+        let hashedPassword;
+        bcrypt.hash(newPassword, 10).then((hashed) => {
+            hashedPassword = hashed;
+            User.findOneAndUpdate(
+                { email: thisRequest.email },
+                { $set: { password: hashedPassword } },
+                { new: true },
+                (err, user) => {
+                    if (err) {
+                        throw err;
+                    }
+                    console.log("Successfully changed password");
+                    res.json(user);
+                }
+            );
+        });
+    } else {
+        res.status(404).json("Oh dear");
+    }
 };
