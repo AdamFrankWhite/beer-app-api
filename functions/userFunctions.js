@@ -1,6 +1,44 @@
 const User = require("../models/user.model");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
+const uniqid = require("uniqid");
+const nodemailer = require("nodemailer");
+
+const sendMail = (request) => {
+    // create reusable transporter object using the default SMTP transport
+    let transporter = nodemailer.createTransport({
+        host: "mail.adamwhite.tech",
+        port: 465,
+        secure: true, // true for 465, false for other ports
+        auth: {
+            user: "adam@adamwhite.tech", // generated ethereal user
+            pass: "wPn9j$sFeVq8", // generated ethereal password
+        },
+    });
+
+    let emailBody = `
+    <b>Hello there,<b>
+    <p>To reset your password, please click the following link:<a href="http://localhost:5000/users/reset/${request.id}">http://localhost:5000/users/reset/${request.id}</a></p>  
+  `;
+    console.log(request.email);
+    // send mail with defined transport object
+    transporter.sendMail(
+        {
+            from: '"BeerMe Admin 👻" <adam@adamwhite.tech>', // sender address
+            to: `<${request.email}>`, // list of receivers
+            subject: "Password Reset", // Subject line
+            text: "Hello,", // plain text body
+            html: emailBody, // html body
+        },
+        (error, info) => {
+            if (error) {
+                console.log(error);
+            }
+            console.log(info);
+        }
+    );
+};
+
 exports.getUsers = (req, res) => {
     User.find()
         .then((users) => res.json(users))
@@ -67,14 +105,20 @@ exports.register = (req, res) => {
     console.log(username + " added");
 };
 
-exports.resetPassword = (req, res) => {
+exports.forgotPassword = (req, res) => {
     const { email } = req.body;
     console.log(email);
     User.findOne({ email })
         .then((user) => {
             if (user) {
+                let id = uniqid();
+                let request = {
+                    id,
+                    email,
+                };
                 res.json({ sent: true });
-                console.log("User Found");
+                console.log("User Found", request);
+                sendMail(request);
                 //Sent email reset
                 //Notify User email sent
             } else {
@@ -84,4 +128,8 @@ exports.resetPassword = (req, res) => {
             }
         })
         .catch((err) => console.log(err));
+};
+
+exports.newPassword = (req, res) => {
+    console.log(req.params.id);
 };
