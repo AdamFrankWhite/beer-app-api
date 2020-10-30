@@ -87,7 +87,7 @@ exports.login = (req, res, next) => {
                         res.status(200).json({
                             beers,
                             token,
-
+                            theme: user.theme,
                             username: user.username,
                         });
                     } else {
@@ -174,4 +174,22 @@ exports.resetPassword = (req, res) => {
     } else {
         res.status(404).json("Oh dear");
     }
+};
+
+exports.setTheme = (req, res) => {
+    const { username, color } = req.body;
+    console.log(username, color);
+    User.findOneAndUpdate(
+        { username },
+        { $set: { theme: color } },
+        { use: true, useFindAndModify: false },
+        (err, user) => {
+            if (err) {
+                res.json(err);
+            } else {
+                console.log("theme changed");
+                res.status(204).json(user);
+            }
+        }
+    );
 };
