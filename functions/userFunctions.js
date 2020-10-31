@@ -36,8 +36,18 @@ const sendMail = (request) => {
     });
 
     let emailBody = `
-    <b>Hello there,<b>
-    <p>To reset your password, please click the following link:<a href="http://localhost:3000/reset/?q=${request.id}">http://localhost:3000/reset/q?=${request.id}</a></p>  
+    <html>
+        <head></head>
+        <style>
+            body {background: darkgray; margin: auto; width: 70%; font-family: "Tahoma"; font-size: 1.5em; color: white; padding: 2em;}
+            * {text-align: center;}
+
+        </style>
+        <body>
+            <b>Hello there,<b>
+            <p>To reset your password, please click the following link:<a href="http://localhost:3000/reset/?q=${request.id}">http://localhost:3000/reset/q?=${request.id}</a></p>
+        </body>
+    </html>  
   `;
 
     // send mail with defined transport object
@@ -89,6 +99,7 @@ exports.login = (req, res, next) => {
                             token,
                             theme: user.theme,
                             username: user.username,
+                            email: user.email,
                         });
                     } else {
                         console.log("Login failed");
@@ -189,6 +200,24 @@ exports.setTheme = (req, res) => {
             } else {
                 console.log("theme changed");
                 res.status(204).json(user);
+            }
+        }
+    );
+};
+
+exports.changeEmail = (req, res) => {
+    const { username, email } = req.body;
+    User.findOneAndUpdate(
+        { username },
+        { $set: { email } },
+        { use: true, useFindAndModify: false },
+        (err, user) => {
+            if (err) {
+                res.json(err);
+            } else {
+                console.log(user);
+                console.log("email updated");
+                res.json(user);
             }
         }
     );

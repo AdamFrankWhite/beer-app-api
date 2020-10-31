@@ -70,7 +70,6 @@ exports.updateBeerRating = (req, res) => {
         user.save()
             .then(() => {
                 res.json(user.beers);
-                res.json("Beer updated");
             })
             .catch((err) => res.json("Error: " + err));
     });
