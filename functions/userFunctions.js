@@ -209,13 +209,12 @@ exports.changeEmail = (req, res) => {
     const { username, email } = req.body;
     User.findOneAndUpdate(
         { username },
-        { $set: { email } },
+        { $set: { email: email } },
         { use: true, useFindAndModify: false },
         (err, user) => {
             if (err) {
                 res.json(err);
             } else {
-                console.log(user);
                 console.log("email updated");
                 res.json(user);
             }
