@@ -68,7 +68,7 @@ exports.updateBeerRating = (req, res) => {
         user.beers = newBeerList;
         user.save()
             .then(() => {
-                res.json(updateBeerDetails);
+                return res.json(updateBeerDetails);
             })
             .catch((err) => res.json("Error: " + err));
     });
