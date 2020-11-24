@@ -31,7 +31,6 @@ exports.addBeer = (req, res) => {
         user.save()
             .then(() => {
                 res.json(user.beers);
-                res.json("Beer added");
             })
             .catch((err) => res.json("Error: " + err));
     });
@@ -69,7 +68,7 @@ exports.updateBeerRating = (req, res) => {
         user.beers = newBeerList;
         user.save()
             .then(() => {
-                res.json(user.beers);
+                res.json(updateBeerDetails);
             })
             .catch((err) => res.json("Error: " + err));
     });
