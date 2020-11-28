@@ -79,12 +79,12 @@ exports.login = (req, res, next) => {
         password: req.body.password,
     };
     User.authenticate(user.username, user.password, (error, user) => {
-        let beers = user.beers ? user.beers : [];
         if (error || !user) {
             let err = new Error("User or password do not match");
             err.status = 401;
             return next(err);
         } else {
+            let beers = user.beers ? user.beers : [];
             console.log("Login attempt...");
             // If authorised, create token
             jwt.sign(
@@ -161,6 +161,32 @@ exports.forgotPassword = (req, res) => {
         .catch((err) => console.log(err));
 };
 
+exports.changePassword = (req, res) => {
+    const { username, oldPassword, newPassword } = req.body;
+    User.authenticate(username, oldPassword, (error, user) => {
+        if (error || !user) {
+            let err = new Error("Password incorrect");
+            err.status = 401;
+            return next(err);
+        } else {
+            //Set new password
+            bcrypt.hash(newPassword, 10).then((hashed) => {
+                User.findOneAndUpdate(
+                    { username: username },
+                    { $set: { password: hashed } },
+                    { new: true, useFindAndModify: false },
+                    (err, user) => {
+                        if (err) {
+                            throw err;
+                        }
+                        console.log("You have successfully changed password");
+                        res.json("Password changed");
+                    }
+                );
+            });
+        }
+    });
+};
 exports.resetPassword = (req, res) => {
     const { id, newPassword } = req.body;
     console.log(id, newPassword);
