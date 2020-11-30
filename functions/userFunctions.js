@@ -27,6 +27,7 @@ function getResetRequest(id) {
 const sendMail = (request) => {
     // create reusable transporter object using the default SMTP transport
     let transporter = nodemailer.createTransport({
+        name: "BeerBookmark",
         host: "mail.adamwhite.tech",
         port: 465,
         secure: true, // true for 465, false for other ports
@@ -40,8 +41,8 @@ const sendMail = (request) => {
     // send mail with defined transport object
     transporter.sendMail(
         {
-            from: '"BeerMe Admin 👻" <adam@adamwhite.tech>', // sender address
-            to: `<${request.email}>`, // list of receivers
+            from: '"BeerBookmark Admin" <adam@adamwhite.tech>', // sender address
+            to: `"${request.username}" <${request.email}>`, // list of receivers
             subject: "Password Reset", // Subject line
             text: "Hello,", // plain text body
             html: emailBody, // html body
@@ -49,6 +50,8 @@ const sendMail = (request) => {
         (error, info) => {
             if (error) {
                 console.log(error);
+            } else {
+                console.log(info);
             }
         }
     );
