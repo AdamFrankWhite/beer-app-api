@@ -3,6 +3,7 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const uniqid = require("uniqid");
 const nodemailer = require("nodemailer");
+const getEmailBody = require("../emailBody.js");
 // const {
 //     getResetRequest,
 //     createResetRequest,
@@ -35,21 +36,7 @@ const sendMail = (request) => {
         },
     });
 
-    let emailBody = `
-    <html>
-        <head></head>
-        <style>
-            body {background: darkgray; margin: auto; width: 70%; font-family: "Tahoma"; font-size: 1.5em; color: white; padding: 2em;}
-            * {text-align: center;}
-
-        </style>
-        <body>
-            <b>Hello there,<b>
-            <p>To reset your password, please click the following link:<a href="http://localhost:3000/reset/?q=${request.id}">http://localhost:3000/reset/q?=${request.id}</a></p>
-        </body>
-    </html>  
-  `;
-
+    let emailBody = getEmailBody(request.id, request.username);
     // send mail with defined transport object
     transporter.sendMail(
         {
@@ -144,6 +131,7 @@ exports.forgotPassword = (req, res) => {
                 let request = {
                     id,
                     email,
+                    username: user.username,
                 };
 
                 res.json({ sent: true });
@@ -241,7 +229,7 @@ exports.changeEmail = (req, res) => {
             if (err) {
                 res.json(err);
             } else {
-                console.log("email updated");
+                console.log("email updated: ", user.email);
                 res.json(user);
             }
         }
