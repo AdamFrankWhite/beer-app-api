@@ -30,6 +30,10 @@ const userSchema = new Schema(
             type: Array,
             required: false,
         },
+        beerGroups: {
+            type: Array,
+            required: false,
+        },
         theme: {
             type: String,
             required: false,

@@ -41,7 +41,7 @@ const sendMail = (request) => {
     // send mail with defined transport object
     transporter.sendMail(
         {
-            from: '"BeerBookmark Admin" <adam@adamwhite.tech>', // sender address
+            from: '"BeerBookmark" <adam@adamwhite.tech>', // sender address
             to: `"${request.username}" <${request.email}>`, // list of receivers
             subject: "Password Reset", // Subject line
             text: "Hello,", // plain text body
@@ -90,6 +90,7 @@ exports.login = (req, res, next) => {
                             theme: user.theme,
                             username: user.username,
                             email: user.email,
+                            beerGroups: user.beerGroups,
                         });
                     } else {
                         console.log("Login failed");

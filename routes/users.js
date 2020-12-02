@@ -18,6 +18,7 @@ const {
     getUserBeers,
     deleteBeer,
     updateBeerRating,
+    addNewGroup,
     // updateBeerRatingById
 } = require("../functions/beerFunctions");
 
@@ -36,6 +37,7 @@ router.route("/my-beers/:username").get(getUserBeers);
 router.route("/my-beers/add").post(addBeer);
 router.route("/my-beers/delete-beer").put(deleteBeer);
 router.route("/my-beers/update").put(updateBeerRating);
+router.route("/my-beers/add-group").post(addNewGroup);
 // router.route("/my-beers/update/:id").post(updateBeerRatingById);
 
 module.exports = router;

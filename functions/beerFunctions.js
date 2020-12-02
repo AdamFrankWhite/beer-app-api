@@ -20,6 +20,7 @@ exports.addBeer = (req, res) => {
         stars: req.body.stars,
         img: req.body.img,
         beerInfo: req.body.beerInfo,
+        beerGroup: req.body.beerGroup,
     };
 
     User.findOne({ username: req.body.username }).then((user) => {
@@ -36,6 +37,25 @@ exports.addBeer = (req, res) => {
     });
 };
 
+exports.addNewGroup = (req, res) => {
+    const { newGroup, username } = req.body;
+    User.findOne({ username }).then((user) => {
+        let beerGroups = [...user.beerGroups];
+        console.log(beerGroups, newGroup);
+        if (!beerGroups.includes(newGroup)) {
+            beerGroups.push(newGroup);
+        } else {
+            return res.json({ error: "Group already exists" });
+        }
+
+        user.beerGroups = beerGroups;
+        user.save()
+            .then(() => {
+                return res.json(user.beerGroups);
+            })
+            .catch((err) => res.json("Error: " + err));
+    });
+};
 exports.deleteBeer = (req, res) => {
     const removeBeerDetails = req.body.beerData;
 
