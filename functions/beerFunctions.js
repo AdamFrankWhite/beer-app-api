@@ -15,6 +15,7 @@ exports.addBeer = (req, res) => {
         abv: req.body.abv,
         beerDescription: req.body.beerDescription,
         brewery: req.body.brewery,
+        breweryName: req.body.breweryName,
         date: Date.parse(req.body.date),
         stars: req.body.stars,
         img: req.body.img,
