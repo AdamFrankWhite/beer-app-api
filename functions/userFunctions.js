@@ -125,6 +125,23 @@ exports.register = (req, res) => {
     console.log(username + " added");
 };
 
+exports.setMarketingPref = (req, res) => {
+    const { preference, username } = req.body;
+    User.findOneAndUpdate(
+        { username },
+        { $set: { marketingPref: preference } },
+        { new: true, useFindAndModify: false },
+        (err, user) => {
+            if (err) {
+                res.json(err);
+            }
+            console.log("Changed marketing preference");
+
+            res.json({ preference, user });
+        }
+    );
+};
+
 exports.forgotPassword = (req, res) => {
     const { email } = req.body;
     console.log(email);

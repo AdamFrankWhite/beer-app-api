@@ -38,6 +38,10 @@ const userSchema = new Schema(
             type: String,
             required: false,
         },
+        marketingPref: {
+            type: Boolean,
+            required: true,
+        },
     },
     {
         timestamps: true,

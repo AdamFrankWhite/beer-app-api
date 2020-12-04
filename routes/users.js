@@ -12,6 +12,7 @@ const {
     setTheme,
     changeEmail,
     changePassword,
+    setMarketingPref,
 } = require("../functions/userFunctions");
 const {
     addBeer,
@@ -31,6 +32,7 @@ router.route("/reset").put(resetPassword);
 router.route("/set-theme").put(setTheme);
 router.route("/email").put(changeEmail);
 router.route("/change-password").put(changePassword);
+router.route("/set-marketing").post(setMarketingPref);
 // Beer routes
 
 router.route("/my-beers/:username").get(getUserBeers);
@@ -38,6 +40,7 @@ router.route("/my-beers/add").post(addBeer);
 router.route("/my-beers/delete-beer").put(deleteBeer);
 router.route("/my-beers/update").put(updateBeerRating);
 router.route("/my-beers/add-group").post(addNewGroup);
+
 // router.route("/my-beers/update/:id").post(updateBeerRatingById);
 
 module.exports = router;
